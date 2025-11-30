@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* body[data-theme="dark"] {
+    background-color: #333;
+    color: #fff;
+}
+
+body[data-theme="light"] {
+    background-color: #fff;
+    color: #000;
+} */
+
+
+/* 🌙 Light Theme */
+body[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f4f4f4;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4b4b4b;
+  --card-bg: #ffffff;
+  --navbar-bg: #1c3b33;
+}
+
+/* 🌙 Dark Theme */
+body[data-theme="dark"] {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --text-primary: #f0f6fc;
+  --text-secondary: #c9d1d9;
+  --card-bg: #1c2128;
+  --navbar-bg: #0f1b17;
+}
+
+/* ✔ Smooth transitions everywhere */
+/* body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
+} */
+
+/* ✔ Cards, sections, pages use variables */
+/* section,
+div,
+header,
+footer {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.navbar-inner {
+  background-color: var(--navbar-bg) !important;
+  transition: background 0.3s ease;
+} */
+
+
+/* font-family: "Montserrat", sans-serif; */
+
+.input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
