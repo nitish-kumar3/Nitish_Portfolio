@@ -198,10 +198,6 @@ import EditService from "./admin/services/EditService";
 
 import Settings from "./admin/Setting";
 
-// import ServiceList from "./admin/services/ServiceList";
-// import AddService from "./admin/services/ServiceCard";
-// import EditService from "./admin/services/ServiceSlideOver";
-
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -243,9 +239,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="services/new" element={<AddService />} />
           <Route path="services/edit/:id" element={<EditService />} />
 
-          <Route path="/admin/settings" element={<Settings />} />
-
-
+          {/* FIXED SETTINGS ROUTE */}
+          <Route path="settings" element={<Settings />} />
 
         </Route>
 
