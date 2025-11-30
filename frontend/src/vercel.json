@@ -1,12 +1,12 @@
 {
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/",
       "dest": "/"
     },
     {
       "src": "/admin",
-      "dest": "/"
+      "dest": "/admin"
     }
   ]
 }
