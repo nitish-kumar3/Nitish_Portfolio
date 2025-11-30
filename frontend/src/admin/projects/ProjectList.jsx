@@ -29,11 +29,13 @@ const ProjectList = () => {
         method: "DELETE",
       });
       toast.success("Project deleted");
+      setProjects((s) => s.filter((p) => p._id !== id));
       loadProjects();
     } catch (err) {
       toast.error("Delete failed");
     }
   };
+
 
   return (
     <div className="p-6 bg-green-100 min-h-screen dark:bg-gray-900">
