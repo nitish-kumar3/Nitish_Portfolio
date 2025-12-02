@@ -414,6 +414,117 @@
 
 
 
+// import React, { useState, useEffect } from 'react';
+// import Logo from '../assets/logos.png';
+// import { Sun, Moon, Menu, X } from 'lucide-react';
+// import './navbarrs.css';
+
+// const Navbar = () => {
+//   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+//   const [theme, setTheme] = useState(
+//     localStorage.getItem("theme") || "light"
+//   );
+
+//   // 🔥 Apply theme to <body>
+//   const applyTheme = (mode) => {
+//     document.body.setAttribute("data-theme", mode);
+//     localStorage.setItem("theme", mode);
+//     setTheme(mode);
+//   };
+
+//   const toggleTheme = () => {
+//     applyTheme(theme === "light" ? "dark" : "light");
+//   };
+
+//   // 🔥 Apply theme on page load
+//   useEffect(() => {
+//     applyTheme(theme);
+//   }, []);
+
+//   return (
+//     <header className="navbar-container sticky top-4 z-50 w-full flex justify-center">
+//       <div className="navbar-inner max-w-6xl w-[90%] md:w-[80%] flex items-center justify-between px-6 py-3 rounded-full shadow-md">
+
+//         {/* Left - Logo */}
+//         <div className="flex items-center space-x-3">
+//           <div className="logo-circle flex items-center justify-center bg-yellow-500 rounded-full w-10 h-10">
+//             <img src={Logo} alt="Logo" className="w-6 h-6" />
+//           </div>
+//           <h1 className="text-white font-semibold text-xl font-displayer">
+//             Nitish<span className="text-yellow-400">.</span>
+//           </h1>
+//         </div>
+
+//         {/* Center - Nav Links */}
+//         <nav className="hidden md:flex items-center space-x-8 text-base font-medium font-displayer text-gray-200">
+//           <a href="#hero" className="text-yellow-400">Home</a>
+//           <a href="#services" className="hover:text-yellow-400 transition">Services</a>
+//           <a href="#about" className="hover:text-yellow-400 transition">About</a>
+//           <a href="#projects" className="hover:text-yellow-400 transition">Projects</a>
+//         </nav>
+
+//         {/* Right - Theme Toggle + Contact Button */}
+//         <div className="flex items-center space-x-4">
+
+//           {theme === "light" ? (
+//             <Sun
+//               className="w-6 h-6 text-yellow-400 cursor-pointer hover:rotate-12 transition-transform"
+//               onClick={toggleTheme}
+//             />
+//           ) : (
+//             <Moon
+//               className="w-6 h-6 text-gray-200 cursor-pointer hover:-rotate-12 transition-transform"
+//               onClick={toggleTheme}
+//             />
+//           )}
+
+//           <a
+//             href="#contact"
+//             className="hidden md:inline-block bg-yellow-500 text-white font-semibold font-displayer px-5 py-2 rounded-full shadow hover:bg-yellow-600 transition"
+//           >
+//             Contact Me
+//           </a>
+
+//           <button
+//             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+//             className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-white"
+//           >
+//             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* Mobile Menu */}
+//       {mobileMenuOpen && (
+//         <div className="md:hidden bg-[#1c3b33] w-[90%] mx-auto mt-2 rounded-2xl shadow-lg py-4 text-center space-y-3 text-gray-100 font-displayer">
+//           <a href="#hero" onClick={() => setMobileMenuOpen(false)}>Home</a>
+//           <a href="#services" onClick={() => setMobileMenuOpen(false)}>Services</a>
+//           <a href="#about" onClick={() => setMobileMenuOpen(false)}>About</a>
+//           <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Projects</a>
+
+//           <a
+//             href="#contact"
+//             onClick={() => setMobileMenuOpen(false)}
+//             className="bg-white text-gray-800 px-5 py-2 rounded-full inline-block font-semibold font-displayer"
+//           >
+//             Contact Me
+//           </a>
+//         </div>
+//       )}
+//     </header>
+//   );
+// };
+
+// export default Navbar;
+
+
+
+
+
+
+
+
+
 import React, { useState, useEffect } from 'react';
 import Logo from '../assets/logos.png';
 import { Sun, Moon, Menu, X } from 'lucide-react';
@@ -425,7 +536,6 @@ const Navbar = () => {
     localStorage.getItem("theme") || "light"
   );
 
-  // 🔥 Apply theme to <body>
   const applyTheme = (mode) => {
     document.body.setAttribute("data-theme", mode);
     localStorage.setItem("theme", mode);
@@ -436,16 +546,20 @@ const Navbar = () => {
     applyTheme(theme === "light" ? "dark" : "light");
   };
 
-  // 🔥 Apply theme on page load
   useEffect(() => {
     applyTheme(theme);
   }, []);
 
   return (
-    <header className="navbar-container sticky top-4 z-50 w-full flex justify-center">
-      <div className="navbar-inner max-w-6xl w-[90%] md:w-[80%] flex items-center justify-between px-6 py-3 rounded-full shadow-md">
+    <header className="sticky top-4 z-50 w-full flex flex-col items-center px-4">
 
-        {/* Left - Logo */}
+      {/* NAVBAR */}
+      <div className="
+        navbar-inner max-w-6xl w-full 
+        flex items-center justify-between 
+        px-4 py-3 rounded-full shadow-md
+      ">
+        {/* Left Logo */}
         <div className="flex items-center space-x-3">
           <div className="logo-circle flex items-center justify-center bg-yellow-500 rounded-full w-10 h-10">
             <img src={Logo} alt="Logo" className="w-6 h-6" />
@@ -455,7 +569,7 @@ const Navbar = () => {
           </h1>
         </div>
 
-        {/* Center - Nav Links */}
+        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-8 text-base font-medium font-displayer text-gray-200">
           <a href="#hero" className="text-yellow-400">Home</a>
           <a href="#services" className="hover:text-yellow-400 transition">Services</a>
@@ -463,40 +577,41 @@ const Navbar = () => {
           <a href="#projects" className="hover:text-yellow-400 transition">Projects</a>
         </nav>
 
-        {/* Right - Theme Toggle + Contact Button */}
+        {/* Right Buttons */}
         <div className="flex items-center space-x-4">
-
           {theme === "light" ? (
-            <Sun
-              className="w-6 h-6 text-yellow-400 cursor-pointer hover:rotate-12 transition-transform"
-              onClick={toggleTheme}
-            />
+            <Sun className="w-6 h-6 text-yellow-400 cursor-pointer" onClick={toggleTheme} />
           ) : (
-            <Moon
-              className="w-6 h-6 text-gray-200 cursor-pointer hover:-rotate-12 transition-transform"
-              onClick={toggleTheme}
-            />
+            <Moon className="w-6 h-6 text-gray-200 cursor-pointer" onClick={toggleTheme} />
           )}
 
           <a
             href="#contact"
-            className="hidden md:inline-block bg-yellow-500 text-white font-semibold font-displayer px-5 py-2 rounded-full shadow hover:bg-yellow-600 transition"
+            className="hidden md:inline-block bg-yellow-500 text-white font-semibold font-displayer px-5 py-2 rounded-full shadow"
           >
             Contact Me
           </a>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-white"
+            className="md:hidden inline-flex items-center justify-center p-2 text-white"
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* MOBILE MENU (Drops directly under navbar) */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#1c3b33] w-[90%] mx-auto mt-2 rounded-2xl shadow-lg py-4 text-center space-y-3 text-gray-100 font-displayer">
+        <div
+          className="
+            md:hidden bg-[#1c3b33] 
+            w-full max-w-6xl 
+            mt-2 rounded-2xl shadow-lg 
+            py-4 flex flex-col items-center 
+            space-y-4 text-gray-100 font-displayer
+          "
+        >
           <a href="#hero" onClick={() => setMobileMenuOpen(false)}>Home</a>
           <a href="#services" onClick={() => setMobileMenuOpen(false)}>Services</a>
           <a href="#about" onClick={() => setMobileMenuOpen(false)}>About</a>
@@ -505,12 +620,13 @@ const Navbar = () => {
           <a
             href="#contact"
             onClick={() => setMobileMenuOpen(false)}
-            className="bg-white text-gray-800 px-5 py-2 rounded-full inline-block font-semibold font-displayer"
+            className="bg-white text-gray-800 px-5 py-2 rounded-full font-semibold font-displayer"
           >
             Contact Me
           </a>
         </div>
       )}
+
     </header>
   );
 };
