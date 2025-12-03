@@ -86,7 +86,7 @@ const EditService = ({ service, onEdit, onDelete }) => {
             <p className="text-sm text-gray-600 mt-2">{service.short}</p>
           </div>
 
-          <div className="mt-4 flex gap-2">
+          <div className="mt-4 flex gap-25">
             <button onClick={() => onEdit(service)} className="px-3 py-1 bg-yellow-400 text-green-900 rounded">Edit</button>
             <button onClick={() => onDelete(service._id)} className="px-3 py-1 bg-red-600 text-white rounded">Delete</button>
           </div>

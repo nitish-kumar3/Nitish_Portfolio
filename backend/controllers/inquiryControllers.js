@@ -100,6 +100,71 @@
 
 
 
+// import nodemailer from "nodemailer";
+// import Inquiry from "../model/Inquiry.js";
+
+// export const sendInquiry = async (req, res) => {
+//   try {
+//     const { serviceId, name, email, message } = req.body ?? {};
+
+//     if (!serviceId || !name || !email || !message) {
+//       return res
+//         .status(400)
+//         .json({ success: false, message: "Missing required fields" });
+//     }
+
+//     // Save to DB immediately
+//     await Inquiry.create({ serviceId, name, email, message });
+
+//     // 👉 RETURN RESPONSE INSTANTLY (no waiting for email)
+//     res.json({
+//       success: true,
+//       message: "Inquiry saved successfully",
+//     });
+
+//     // 👉 RUN EMAIL SENDING IN BACKGROUND (non-blocking)
+//     setTimeout(() => {
+//       try {
+//         const transporter = nodemailer.createTransport({
+//           service: "gmail",
+//           auth: {
+//             user: process.env.EMAIL_USER,
+//             pass: process.env.EMAIL_PASS,
+//           },
+//         });
+
+//         const mailOptions = {
+//           from: process.env.EMAIL_USER,
+//           to: process.env.EMAIL_USER,
+//           replyTo: email,
+//           subject: `New Inquiry - ${name}`,
+//           html: `
+//             <h2>New Inquiry</h2>
+//             <p><strong>Service ID:</strong> ${serviceId}</p>
+//             <p><strong>Name:</strong> ${name}</p>
+//             <p><strong>Email:</strong> ${email}</p>
+//             <p><strong>Message:</strong></p>
+//             <p>${message.replace(/\n/g, "<br>")}</p>
+//           `,
+//         };
+
+//         transporter.sendMail(mailOptions, (err) => {
+//           if (err) console.log("Email error:", err.message);
+//           else console.log("Email sent successfully");
+//         });
+//       } catch (err) {
+//         console.log("Background email error:", err.message);
+//       }
+//     }, 0);
+
+//   } catch (err) {
+//     console.error("Inquiry error:", err);
+//     return res.status(500).json({ success: false, message: "Server error" });
+//   }
+// };
+
+
+
 import nodemailer from "nodemailer";
 import Inquiry from "../model/Inquiry.js";
 
@@ -113,20 +178,23 @@ export const sendInquiry = async (req, res) => {
         .json({ success: false, message: "Missing required fields" });
     }
 
-    // Save to DB immediately
+    // Save inquiry instantly
     await Inquiry.create({ serviceId, name, email, message });
 
-    // 👉 RETURN RESPONSE INSTANTLY (no waiting for email)
+    // Send immediate response (fast toast)
     res.json({
       success: true,
       message: "Inquiry saved successfully",
     });
 
-    // 👉 RUN EMAIL SENDING IN BACKGROUND (non-blocking)
-    setTimeout(() => {
+    // EMAIL SENDING AFTER RESPONSE (non-blocking)
+    setTimeout(async () => {
       try {
+        // ✅ Correct Gmail SMTP setup (App Password required)
         const transporter = nodemailer.createTransport({
-          service: "gmail",
+          host: "smtp.gmail.com",
+          port: 465,
+          secure: true,
           auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS,
@@ -135,25 +203,30 @@ export const sendInquiry = async (req, res) => {
 
         const mailOptions = {
           from: process.env.EMAIL_USER,
-          to: process.env.EMAIL_USER,
+          to: process.env.EMAIL_USER, // send to yourself
           replyTo: email,
-          subject: `New Inquiry - ${name}`,
+          subject: `New Service Inquiry from ${name}`,
           html: `
-            <h2>New Inquiry</h2>
+            <h2>New Service Inquiry</h2>
+
             <p><strong>Service ID:</strong> ${serviceId}</p>
             <p><strong>Name:</strong> ${name}</p>
             <p><strong>Email:</strong> ${email}</p>
+
             <p><strong>Message:</strong></p>
-            <p>${message.replace(/\n/g, "<br>")}</p>
+            <p>${message.replace(/\n/g, "<br/>")}</p>
+
+            <hr />
+            <p>Received: ${new Date().toLocaleString()}</p>
           `,
         };
 
-        transporter.sendMail(mailOptions, (err) => {
-          if (err) console.log("Email error:", err.message);
-          else console.log("Email sent successfully");
-        });
-      } catch (err) {
-        console.log("Background email error:", err.message);
+        // Send email
+        await transporter.sendMail(mailOptions);
+        console.log("📩 Email sent successfully");
+
+      } catch (emailErr) {
+        console.log("❌ EMAIL SENDING ERROR:", emailErr.message);
       }
     }, 0);
 
