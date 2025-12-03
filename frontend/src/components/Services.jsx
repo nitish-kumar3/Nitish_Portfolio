@@ -1489,7 +1489,6 @@
 
 
 
-
 // src/components/Services.jsx
 import React, { useState, useMemo, useEffect } from "react";
 import { Search, Filter, Code, MessageSquare } from "lucide-react";
@@ -1517,7 +1516,9 @@ export default function Services() {
     try {
       const res = await fetch(`${BACKEND_URL}/api/services`);
       const data = await res.json();
-      setServices(data);
+
+      // ✅ FIX: Backend returns { services: [...] }
+      setServices(data.services || []);
     } catch (err) {
       console.error("Failed to load services", err);
     }
@@ -1573,7 +1574,7 @@ export default function Services() {
     setLoading(true);
     try {
       await submitInquiryAPI({
-        serviceId: modalService._id || modalService.id,
+        serviceId: modalService._id,
         serviceTitle: modalService.title,
         name: formName,
         email: formEmail,
@@ -1590,7 +1591,8 @@ export default function Services() {
   };
 
   const ServiceCard = ({ s }) => {
-    const imgSrc = s.image?.startsWith("http") ? s.image : `${BACKEND_URL}${s.image}`;
+    // ✅ FIX: Cloudinary full URL works immediately
+    const imgSrc = s.image;
 
     return (
       <article
@@ -1600,7 +1602,7 @@ export default function Services() {
         <div>
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-green-900 text-yellow-400 mb-4">
             {s.image ? (
-              <img src={imgSrc} alt={s.title} className="w-8 h-8 object-cover rounded" />
+              <img src={imgSrc} alt={s.title} className="w-12 h-12 object-cover rounded" />
             ) : (
               <Code size={20} />
             )}
@@ -1634,51 +1636,44 @@ export default function Services() {
 
   return (
     <>
-      {/* Top Marquee */}
-      <div className="relative bg-gradient-to-r from-green-800 via-yellow-500 to-green-700 py-3 overflow-hidden shadow-lg cursor-pointer">
-        <Marquee direction="left" pauseOnHover speed={70} gradient={false} className="relative whitespace-nowrap text-white font-semibold text-lg py-3 cursor-pointer">
+      {/* Marquee */}
+      <div className="relative bg-gradient-to-r from-green-800 via-yellow-500 to-green-700 py-3 shadow-lg">
+        <Marquee direction="left" pauseOnHover speed={70} gradient={false} className="text-white font-semibold text-lg py-3">
           <span className="hover:text-yellow-200 font-displayer">⭐ Hii Welcome to Nitish Portfolio Site.</span>
         </Marquee>
       </div>
 
       {/* MAIN */}
-      <main id="services" className="py-16 md:py-24 min-h-screen bg-gradient-to-br from-gray-300 via-green-400 to-gray-900 font-display">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <main id="services" className="py-16 min-h-screen bg-gradient-to-br from-gray-300 via-green-400 to-gray-900 font-display">
+        <div className="max-w-7xl mx-auto px-6">
 
           {/* HEADER */}
-          <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 cursor-pointer">
+          <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
-              <p className="text-sm font-medium font-display text-yellow-500 inline-flex items-center gap-2">
+              <p className="text-sm font-medium font-display text-yellow-500 flex items-center gap-2">
                 <Filter size={16} /> Services
               </p>
-              <h1 className="mt-2 text-3xl md:text-4xl font-extrabold font-display text-gray-900">
+              <h1 className="mt-2 text-3xl md:text-4xl font-extrabold text-gray-900 font-display">
                 What I do — Fullstack, Frontend, Backend & AI Automation
               </h1>
             </div>
 
-            {/* SEARCH + SORT */}
-            <div className="w-full md:w-auto flex flex-col md:flex-row gap-3 items-start md:items-center cursor-pointer">
-              <div className="relative w-full md:w-auto cursor-text">
+            {/* SEARCH */}
+            <div className="w-full md:w-auto flex flex-col md:flex-row gap-3 items-start md:items-center">
+              <div className="relative w-full md:w-auto">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                 <input
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
                   placeholder="Search services..."
-                  className="pl-10 pr-3 py-2 border border-yellow-300 bg-white/90 backdrop-blur rounded-full w-full md:w-72 focus:outline-none focus:ring-2 focus:ring-green-700"
+                  className="pl-10 pr-3 py-2 border border-yellow-300 bg-white/90 backdrop-blur rounded-full w-full md:w-72"
                 />
               </div>
 
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
-                className="
-                  py-2 px-3 
-                  border rounded-full 
-                  bg-white/90 backdrop-blur 
-                  font-displayer cursor-pointer 
-                  w-full max-w-[180px] 
-                  md:max-w-none md:w-auto
-                "
+                className="py-2 px-3 border rounded-full bg-white/90 backdrop-blur"
               >
                 <option value="relevance">Most relevant</option>
                 <option value="alpha">A → Z</option>
@@ -1687,7 +1682,7 @@ export default function Services() {
           </header>
 
           {/* CATEGORIES */}
-          <div className="mt-8 flex gap-3 flex-wrap cursor-pointer">
+          <div className="mt-8 flex gap-3 flex-wrap">
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -1699,7 +1694,7 @@ export default function Services() {
             ))}
           </div>
 
-          {/* SERVICES GRID */}
+          {/* GRID */}
           <section className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((s) => <ServiceCard key={s._id} s={s} />)}
 
@@ -1715,81 +1710,45 @@ export default function Services() {
         {modalService && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/40" onClick={() => setModalService(null)} />
-            <div className="relative bg-white/95 backdrop-blur border border-green-200 w-full max-w-lg sm:max-w-xl md:max-w-2xl rounded-xl shadow-xl z-10 p-3 sm:p-4">
-              {/* Modal header */}
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900">{modalService.title}</h2>
-                  <p className="mt-1 text-sm text-gray-700">{modalService.description}</p>
-                  <div className="mt-2 flex gap-2 flex-wrap">
-                    {(modalService.badges || []).map((b) => (
-                      <span key={b} className="text-xs bg-gray-100 px-2 py-0.5 rounded-full">{b}</span>
-                    ))}
-                  </div>
+            <div className="relative bg-white/95 backdrop-blur border border-green-200 w-full max-w-2xl rounded-xl shadow-xl p-4">
+              <h2 className="text-xl font-bold">{modalService.title}</h2>
+              <p className="mt-1 text-sm">{modalService.description}</p>
 
-                  {modalService.image && (
-                    <img
-                      src={modalService.image?.startsWith("http") ? modalService.image : `${BACKEND_URL}${modalService.image}`}
-                      alt={modalService.title}
-                      className="w-full h-32 sm:h-40 object-cover rounded mt-3"
-                    />
-                  )}
-                </div>
+              {modalService.image && (
+                <img
+                  src={modalService.image}
+                  className="w-full h-40 object-cover rounded mt-3"
+                />
+              )}
+
+              {/* FORM */}
+              <div className="mt-3 space-y-3">
+                <input
+                  value={formName}
+                  onChange={(e) => setFormName(e.target.value)}
+                  placeholder="Your Name"
+                  className="w-full border px-3 py-2 rounded"
+                />
+                <input
+                  value={formEmail}
+                  onChange={(e) => setFormEmail(e.target.value)}
+                  placeholder="Your Email"
+                  className="w-full border px-3 py-2 rounded"
+                />
+                <textarea
+                  value={formMessage}
+                  onChange={(e) => setFormMessage(e.target.value)}
+                  placeholder="Your Message"
+                  className="w-full border px-3 py-2 rounded"
+                />
 
                 <button
-                  onClick={() => setModalService(null)}
-                  className="text-gray-900 hover:text-gray-800 bg-yellow-400 rounded-full px-3 py-1 text-sm font-medium"
+                  onClick={handleSend}
+                  disabled={loading}
+                  className="bg-green-900 text-white px-4 py-2 rounded"
                 >
-                  Close
+                  {loading ? "Sending..." : "Request Quote"}
                 </button>
-              </div>
-
-              {/* Modal form */}
-              <div className="mt-3 space-y-3 text-sm">
-                <div>
-                  <label className="text-xs text-gray-700">Your Name</label>
-                  <input
-                    value={formName}
-                    onChange={(e) => setFormName(e.target.value)}
-                    className="block w-full rounded-md border border-gray-200 px-3 py-1.5 text-sm"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs text-gray-700">Your Email</label>
-                  <input
-                    value={formEmail}
-                    onChange={(e) => setFormEmail(e.target.value)}
-                    className="block w-full rounded-md border border-gray-200 px-3 py-1.5 text-sm"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs text-gray-700">Message</label>
-                  <textarea
-                    value={formMessage}
-                    onChange={(e) => setFormMessage(e.target.value)}
-                    rows="3"
-                    className="block w-full rounded-md border border-gray-200 px-3 py-1.5 text-sm"
-                  />
-                </div>
-
-                <div className="flex justify-end gap-2 pt-2">
-                  <button
-                    onClick={() => setModalService(null)}
-                    className="text-gray-900 hover:text-gray-800 bg-yellow-400 rounded-full px-4 py-1.5 text-sm font-medium"
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-                    onClick={handleSend}
-                    disabled={loading}
-                    className="inline-flex items-center gap-2 bg-green-900 text-white px-4 py-1.5 rounded-full text-sm"
-                  >
-                    {loading ? "Sending..." : <><MessageSquare size={14} /> Request Quote</>}
-                  </button>
-                </div>
               </div>
             </div>
           </div>
@@ -1798,4 +1757,3 @@ export default function Services() {
     </>
   );
 }
-
