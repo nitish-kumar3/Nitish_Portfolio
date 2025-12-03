@@ -1157,14 +1157,343 @@
 
 
 
+// // src/components/Services.jsx
+// import React, { useState, useMemo, useEffect } from "react";
+// import {
+//   Search,
+//   Filter,
+//   Code,
+//   MessageSquare,
+// } from "lucide-react";
+// import { toast } from "react-hot-toast";
+// import Marquee from "react-fast-marquee";
+// import { BACKEND_URL } from "../utils/utils";
+
+// export default function Services() {
+//   const [q, setQ] = useState("");
+//   const [category, setCategory] = useState("All");
+//   const [sort, setSort] = useState("relevance");
+//   const [modalService, setModalService] = useState(null);
+//   const [services, setServices] = useState([]);
+
+//   const [formName, setFormName] = useState("");
+//   const [formEmail, setFormEmail] = useState("");
+//   const [formMessage, setFormMessage] = useState("");
+//   const [loading, setLoading] = useState(false);
+
+//   useEffect(() => {
+//     fetchServices();
+//   }, []);
+
+//   async function fetchServices() {
+//     try {
+//       const res = await fetch(`${BACKEND_URL}/api/services`);
+//       const data = await res.json();
+//       setServices(data);
+//     } catch (err) {
+//       console.error("Failed to load services", err);
+//     }
+//   }
+
+//   const categories = useMemo(
+//     () => ["All", ...Array.from(new Set(services.map((s) => s.category)))],
+//     [services]
+//   );
+
+//   const filtered = useMemo(() => {
+//     const qLower = q.trim().toLowerCase();
+//     let arr = services.filter((s) => {
+//       if (category !== "All" && s.category !== category) return false;
+//       if (!qLower) return true;
+//       return (
+//         s.title.toLowerCase().includes(qLower) ||
+//         s.short.toLowerCase().includes(qLower) ||
+//         s.description.toLowerCase().includes(qLower) ||
+//         (s.badges || []).join(" ").toLowerCase().includes(qLower)
+//       );
+//     });
+
+//     if (sort === "alpha") arr = arr.slice().sort((a, b) => a.title.localeCompare(b.title));
+//     return arr;
+//   }, [q, category, sort, services]);
+
+//   async function submitInquiryAPI(payload) {
+//     const resp = await fetch(`${BACKEND_URL}/api/inquiries`, {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(payload),
+//     });
+//     if (!resp.ok) {
+//       const text = await resp.text().catch(() => null);
+//       throw new Error(text || "Network error");
+//     }
+//     return resp.json();
+//   }
+
+//   const openModal = (service) => {
+//     setModalService(service);
+//     setFormName("");
+//     setFormEmail("");
+//     setFormMessage("");
+//   };
+
+//   const handleSend = async () => {
+//     if (!formName.trim()) return toast.error("Please enter your name");
+//     if (!formEmail.trim() || !/^\S+@\S+\.\S+$/.test(formEmail)) return toast.error("Please enter a valid email");
+//     if (!formMessage.trim()) return toast.error("Please enter a message");
+
+//     setLoading(true);
+//     try {
+//       await submitInquiryAPI({
+//         serviceId: modalService._id || modalService.id,
+//         serviceTitle: modalService.title,
+//         name: formName,
+//         email: formEmail,
+//         message: formMessage,
+//       });
+
+//       toast.success("Inquiry sent successfully — I will contact you soon!");
+//       setModalService(null);
+//     } catch (err) {
+//       toast.error("Failed to send inquiry. Please try again later.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const ServiceCard = ({ s }) => {
+//     return (
+//       <article
+//         className="group relative bg-white/90 backdrop-blur-sm border border-green-100 rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 p-6 flex flex-col justify-between cursor-pointer"
+//         onClick={() => openModal(s)}
+//       >
+//         <div>
+//           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-green-900 text-yellow-400 mb-4">
+//             {s.image ? (
+//               <img src={`${BACKEND_URL}${s.image}`} alt={s.title} className="w-8 h-8 object-cover rounded" />
+//             ) : <Code size={20} />}
+//           </div>
+
+//           <h3 className="text-lg font-semibold font-display text-gray-900">{s.title}</h3>
+//           <p className="text-sm font-displayer text-gray-600 mt-2">{s.short}</p>
+//         </div>
+
+//         <div className="mt-6 flex items-center justify-between">
+//           <div className="flex gap-2 flex-wrap">
+//             {(s.badges || []).slice(0, 3).map((b) => (
+//               <span key={b} className="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-700">{b}</span>
+//             ))}
+//           </div>
+
+//           <button
+//             onClick={(e)=>{ e.stopPropagation(); openModal(s); }}
+//             className="text-sm font-medium px-3 py-1.5 rounded-full border border-gray-200 hover:bg-gray-50 text-gray-900 font-display transition bg-yellow-400 cursor-pointer"
+//           >
+//             Learn more
+//           </button>
+//         </div>
+
+//         <div className="absolute -top-3 -left-3 px-3 py-1 rounded-br-lg bg-yellow-500 text-xs text-white font-semibold font-displayer">
+//           {s.category}
+//         </div>
+//       </article>
+//     );
+//   };
+
+//   return (
+//     <>
+//       {/* Top Marquee */}
+//       <div className="relative bg-gradient-to-r from-green-800 via-yellow-500 to-green-700 py-3 overflow-hidden shadow-lg cursor-pointer">
+//         <Marquee direction="left" pauseOnHover speed={70} gradient={false} className="relative whitespace-nowrap text-white font-semibold text-lg py-3 cursor-pointer">
+//           <span className="hover:text-yellow-200 font-displayer">⭐ Hii Welcome to Nitish Portfolio Site.</span>
+//         </Marquee>
+//       </div>
+
+//       {/* MAIN */}
+//       <main id="services" className="py-16 md:py-24 min-h-screen bg-gradient-to-br from-gray-300 via-green-400 to-gray-900 font-display">
+//         <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+//           {/* HEADER */}
+//           <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 cursor-pointer">
+
+//             <div>
+//               <p className="text-sm font-medium font-display text-yellow-500 inline-flex items-center gap-2">
+//                 <Filter size={16} /> Services
+//               </p>
+//               <h1 className="mt-2 text-3xl md:text-4xl font-extrabold font-display text-gray-900">
+//                 What I do — Fullstack, Frontend, Backend & AI Automation
+//               </h1>
+//             </div>
+
+//             {/* SEARCH + SORT */}
+//             <div className="w-full md:w-auto flex flex-col md:flex-row gap-3 items-start md:items-center cursor-pointer">
+
+//               {/* Search */}
+//               <div className="relative w-full md:w-auto cursor-text">
+//                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+//                 <input
+//                   value={q}
+//                   onChange={(e) => setQ(e.target.value)}
+//                   placeholder="Search services..."
+//                   className="pl-10 pr-3 py-2 border border-yellow-300 bg-white/90 backdrop-blur rounded-full w-full md:w-72 focus:outline-none focus:ring-2 focus:ring-green-700"
+//                 />
+//               </div>
+
+//               {/* UPDATED RESPONSIVE DROPDOWN */}
+//               <select
+//                 value={sort}
+//                 onChange={(e) => setSort(e.target.value)}
+//                 className="
+//                   py-2 px-3 
+//                   border rounded-full 
+//                   bg-white/90 backdrop-blur 
+//                   font-displayer cursor-pointer 
+//                   w-full max-w-[180px] 
+//                   md:max-w-none md:w-auto
+//                 "
+//               >
+//                 <option value="relevance">Most relevant</option>
+//                 <option value="alpha">A → Z</option>
+//               </select>
+
+//             </div>
+//           </header>
+
+//           {/* CATEGORIES */}
+//           <div className="mt-8 flex gap-3 flex-wrap cursor-pointer">
+//             {categories.map((cat) => (
+//               <button
+//                 key={cat}
+//                 onClick={() => setCategory(cat)}
+//                 className={`px-3 py-1 rounded-full text-sm font-medium ${
+//                   cat === category ? "bg-yellow-500 text-white" : "bg-white/80"
+//                 }`}
+//               >
+//                 {cat}
+//               </button>
+//             ))}
+//           </div>
+
+//           {/* SERVICES GRID */}
+//           <section className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//             {filtered.map((s) => <ServiceCard key={s._id} s={s} />)}
+
+//             {filtered.length === 0 && (
+//               <div className="col-span-full text-center py-12 bg-white/90 backdrop-blur border border-gray-200 rounded-2xl">
+//                 <p className="text-gray-500 font-displayer">No services match your search.</p>
+//               </div>
+//             )}
+//           </section>
+
+//         </div>
+
+//         {/* MODAL */}
+//         {modalService && (
+//           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+
+//             <div className="absolute inset-0 bg-black/40" onClick={() => setModalService(null)} />
+
+//             <div className="
+//               relative bg-white/95 backdrop-blur
+//               border border-green-200 
+//               w-full max-w-lg sm:max-w-xl md:max-w-2xl
+//               rounded-xl shadow-xl z-10 
+//               p-3 sm:p-4
+//             ">
+//               {/* Modal header */}
+//               <div className="flex items-start justify-between gap-3">
+//                 <div>
+//                   <h2 className="text-xl font-bold text-gray-900">{modalService.title}</h2>
+//                   <p className="mt-1 text-sm text-gray-700">{modalService.description}</p>
+
+//                   <div className="mt-2 flex gap-2 flex-wrap">
+//                     {(modalService.badges || []).map((b) => (
+//                       <span key={b} className="text-xs bg-gray-100 px-2 py-0.5 rounded-full">{b}</span>
+//                     ))}
+//                   </div>
+
+//                   {modalService.image && (
+//                     <img
+//                       src={`${BACKEND_URL}${modalService.image}`}
+//                       alt={modalService.title}
+//                       className="w-full h-32 sm:h-40 object-cover rounded mt-3"
+//                     />
+//                   )}
+//                 </div>
+
+//                 <button
+//                   onClick={() => setModalService(null)}
+//                   className="text-gray-900 hover:text-gray-800 bg-yellow-400 rounded-full px-3 py-1 text-sm font-medium"
+//                 >
+//                   Close
+//                 </button>
+//               </div>
+
+//               {/* Modal form */}
+//               <div className="mt-3 space-y-3 text-sm">
+//                 <div>
+//                   <label className="text-xs text-gray-700">Your Name</label>
+//                   <input
+//                     value={formName}
+//                     onChange={(e) => setFormName(e.target.value)}
+//                     className="block w-full rounded-md border border-gray-200 px-3 py-1.5 text-sm"
+//                   />
+//                 </div>
+
+//                 <div>
+//                   <label className="text-xs text-gray-700">Your Email</label>
+//                   <input
+//                     value={formEmail}
+//                     onChange={(e) => setFormEmail(e.target.value)}
+//                     className="block w-full rounded-md border border-gray-200 px-3 py-1.5 text-sm"
+//                   />
+//                 </div>
+
+//                 <div>
+//                   <label className="text-xs text-gray-700">Message</label>
+//                   <textarea
+//                     value={formMessage}
+//                     onChange={(e) => setFormMessage(e.target.value)}
+//                     rows="3"
+//                     className="block w-full rounded-md border border-gray-200 px-3 py-1.5 text-sm"
+//                   />
+//                 </div>
+
+//                 <div className="flex justify-end gap-2 pt-2">
+//                   <button
+//                     onClick={() => setModalService(null)}
+//                     className="text-gray-900 hover:text-gray-800 bg-yellow-400 rounded-full px-4 py-1.5 text-sm font-medium"
+//                   >
+//                     Cancel
+//                   </button>
+
+//                   <button
+//                     onClick={handleSend}
+//                     disabled={loading}
+//                     className="inline-flex items-center gap-2 bg-green-900 text-white px-4 py-1.5 rounded-full text-sm"
+//                   >
+//                     {loading ? "Sending..." : <><MessageSquare size={14} /> Request Quote</>}
+//                   </button>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         )}
+//       </main>
+//     </>
+//   );
+// }
+
+
+
+
+
+
+
+
 // src/components/Services.jsx
 import React, { useState, useMemo, useEffect } from "react";
-import {
-  Search,
-  Filter,
-  Code,
-  MessageSquare,
-} from "lucide-react";
+import { Search, Filter, Code, MessageSquare } from "lucide-react";
 import { toast } from "react-hot-toast";
 import Marquee from "react-fast-marquee";
 import { BACKEND_URL } from "../utils/utils";
@@ -1262,6 +1591,8 @@ export default function Services() {
   };
 
   const ServiceCard = ({ s }) => {
+    const imgSrc = s.image?.startsWith("http") ? s.image : `${BACKEND_URL}${s.image}`;
+
     return (
       <article
         className="group relative bg-white/90 backdrop-blur-sm border border-green-100 rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 p-6 flex flex-col justify-between cursor-pointer"
@@ -1270,8 +1601,10 @@ export default function Services() {
         <div>
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-green-900 text-yellow-400 mb-4">
             {s.image ? (
-              <img src={`${BACKEND_URL}${s.image}`} alt={s.title} className="w-8 h-8 object-cover rounded" />
-            ) : <Code size={20} />}
+              <img src={imgSrc} alt={s.title} className="w-8 h-8 object-cover rounded" />
+            ) : (
+              <Code size={20} />
+            )}
           </div>
 
           <h3 className="text-lg font-semibold font-display text-gray-900">{s.title}</h3>
@@ -1286,7 +1619,7 @@ export default function Services() {
           </div>
 
           <button
-            onClick={(e)=>{ e.stopPropagation(); openModal(s); }}
+            onClick={(e) => { e.stopPropagation(); openModal(s); }}
             className="text-sm font-medium px-3 py-1.5 rounded-full border border-gray-200 hover:bg-gray-50 text-gray-900 font-display transition bg-yellow-400 cursor-pointer"
           >
             Learn more
@@ -1315,7 +1648,6 @@ export default function Services() {
 
           {/* HEADER */}
           <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 cursor-pointer">
-
             <div>
               <p className="text-sm font-medium font-display text-yellow-500 inline-flex items-center gap-2">
                 <Filter size={16} /> Services
@@ -1327,8 +1659,6 @@ export default function Services() {
 
             {/* SEARCH + SORT */}
             <div className="w-full md:w-auto flex flex-col md:flex-row gap-3 items-start md:items-center cursor-pointer">
-
-              {/* Search */}
               <div className="relative w-full md:w-auto cursor-text">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                 <input
@@ -1339,7 +1669,6 @@ export default function Services() {
                 />
               </div>
 
-              {/* UPDATED RESPONSIVE DROPDOWN */}
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
@@ -1355,7 +1684,6 @@ export default function Services() {
                 <option value="relevance">Most relevant</option>
                 <option value="alpha">A → Z</option>
               </select>
-
             </div>
           </header>
 
@@ -1365,9 +1693,7 @@ export default function Services() {
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
-                className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  cat === category ? "bg-yellow-500 text-white" : "bg-white/80"
-                }`}
+                className={`px-3 py-1 rounded-full text-sm font-medium ${cat === category ? "bg-yellow-500 text-white" : "bg-white/80"}`}
               >
                 {cat}
               </button>
@@ -1384,28 +1710,18 @@ export default function Services() {
               </div>
             )}
           </section>
-
         </div>
 
         {/* MODAL */}
         {modalService && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-
             <div className="absolute inset-0 bg-black/40" onClick={() => setModalService(null)} />
-
-            <div className="
-              relative bg-white/95 backdrop-blur
-              border border-green-200 
-              w-full max-w-lg sm:max-w-xl md:max-w-2xl
-              rounded-xl shadow-xl z-10 
-              p-3 sm:p-4
-            ">
+            <div className="relative bg-white/95 backdrop-blur border border-green-200 w-full max-w-lg sm:max-w-xl md:max-w-2xl rounded-xl shadow-xl z-10 p-3 sm:p-4">
               {/* Modal header */}
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">{modalService.title}</h2>
                   <p className="mt-1 text-sm text-gray-700">{modalService.description}</p>
-
                   <div className="mt-2 flex gap-2 flex-wrap">
                     {(modalService.badges || []).map((b) => (
                       <span key={b} className="text-xs bg-gray-100 px-2 py-0.5 rounded-full">{b}</span>
@@ -1414,7 +1730,7 @@ export default function Services() {
 
                   {modalService.image && (
                     <img
-                      src={`${BACKEND_URL}${modalService.image}`}
+                      src={modalService.image?.startsWith("http") ? modalService.image : `${BACKEND_URL}${modalService.image}`}
                       alt={modalService.title}
                       className="w-full h-32 sm:h-40 object-cover rounded mt-3"
                     />
