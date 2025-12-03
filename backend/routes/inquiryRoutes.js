@@ -6,3 +6,5 @@ const router = express.Router();
 router.post("/", sendInquiry);
 
 export default router;
+
+
