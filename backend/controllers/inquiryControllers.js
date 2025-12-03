@@ -100,7 +100,6 @@
 
 
 
-// controllers/inquiryController.js
 import nodemailer from "nodemailer";
 import Inquiry from "../model/Inquiry.js";
 
@@ -114,48 +113,50 @@ export const sendInquiry = async (req, res) => {
         .json({ success: false, message: "Missing required fields" });
     }
 
-    // Save to DB
+    // Save to DB immediately
     await Inquiry.create({ serviceId, name, email, message });
 
-    // Prepare email transport
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
+    // 👉 RETURN RESPONSE INSTANTLY (no waiting for email)
+    res.json({
+      success: true,
+      message: "Inquiry saved successfully",
     });
 
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
-      replyTo: email,
-      subject: `New Inquiry from ${name}`,
-      html: `
-        <h2>New Inquiry</h2>
-        <p><strong>Service ID:</strong> ${serviceId}</p>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, "<br>")}</p>
-      `,
-    };
-
-    // Send email BUT never block the response
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log("Email error:", error);
-        return res.json({
-          success: true,
-          message: "Inquiry saved (email failed)",
+    // 👉 RUN EMAIL SENDING IN BACKGROUND (non-blocking)
+    setTimeout(() => {
+      try {
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+          },
         });
-      }
 
-      return res.json({
-        success: true,
-        message: "Inquiry sent successfully",
-      });
-    });
+        const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: process.env.EMAIL_USER,
+          replyTo: email,
+          subject: `New Inquiry - ${name}`,
+          html: `
+            <h2>New Inquiry</h2>
+            <p><strong>Service ID:</strong> ${serviceId}</p>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Message:</strong></p>
+            <p>${message.replace(/\n/g, "<br>")}</p>
+          `,
+        };
+
+        transporter.sendMail(mailOptions, (err) => {
+          if (err) console.log("Email error:", err.message);
+          else console.log("Email sent successfully");
+        });
+      } catch (err) {
+        console.log("Background email error:", err.message);
+      }
+    }, 0);
+
   } catch (err) {
     console.error("Inquiry error:", err);
     return res.status(500).json({ success: false, message: "Server error" });
