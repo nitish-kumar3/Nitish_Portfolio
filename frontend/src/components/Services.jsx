@@ -1489,6 +1489,7 @@
 
 
 
+
 // src/components/Services.jsx
 import React, { useState, useMemo, useEffect } from "react";
 import { Search, Filter, Code, MessageSquare } from "lucide-react";
@@ -1797,3 +1798,4 @@ export default function Services() {
     </>
   );
 }
+
