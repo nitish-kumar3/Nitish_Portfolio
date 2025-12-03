@@ -214,6 +214,130 @@
 
 
 
+// // src/components/Projects.jsx
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+// import { BACKEND_URL } from "../utils/utils";
+
+// const Projects = () => {
+//   const [projects, setProjects] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const loadProjects = async () => {
+//       try {
+//         const res = await axios.get(`${BACKEND_URL}/api/projects`);
+//         setProjects(res.data);
+//       } catch (error) {
+//         console.error("Failed to load projects:", error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     loadProjects();
+//   }, []);
+
+//   if (loading) {
+//     return (
+//       <div className="text-center py-20 text-xl font-semibold text-white">
+//         Loading projects...
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <section
+//       id="projects"
+//       className="relative bg-green-900 text-white py-20 px-6 md:px-16 overflow-hidden"
+//     >
+//       {/* Decorative Glow */}
+//       <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-400 opacity-10 rounded-full blur-3xl"></div>
+//       <div className="absolute bottom-10 right-10 w-64 h-64 bg-yellow-300 opacity-10 rounded-full blur-3xl"></div>
+
+//       <div className="max-w-7xl mx-auto relative z-10">
+//         {/* Section Header */}
+//         <div className="text-center mb-16">
+//           <p className="text-yellow-400 uppercase tracking-widest font-semibold font-display text-sm">
+//             — My Work
+//           </p>
+//           <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
+//             Featured <span className="text-yellow-400">Projects</span>
+//           </h2>
+//           <div className="w-24 h-1 bg-yellow-400 mx-auto rounded-full"></div>
+//         </div>
+
+//         {/* Projects Grid */}
+//         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+//           {projects.map((item) => (
+//             <div
+//               key={item._id}
+//               className="bg-gray-800/80 backdrop-blur-sm border border-yellow-500 border-4 rounded-2xl overflow-hidden shadow-lg hover:shadow-gray-400/40 hover:-translate-y-2 transition-all duration-500 group"
+//             >
+//               {/* Project Image */}
+//               <div className="overflow-hidden">
+//                 <img
+//                   src={`${BACKEND_URL}${item.image}`}
+//                   alt={item.title}
+//                   className="w-full h-56 object-cover transform group-hover:scale-110 transition-transform duration-700"
+//                 />
+//               </div>
+
+//               {/* Content */}
+//               <div className="p-7 flex flex-col justify-between space-y-1">
+//                 <h3 className="text-2xl font-semibold font-display text-yellow-400 mb-1">
+//                   {item.title}
+//                 </h3>
+
+//                 <p className="text-gray-300 font-displayer text-sm leading-relaxed">
+//                   {item.desc}
+//                 </p>
+
+//                 {/* Buttons */}
+//                 <div className="flex items-center gap-25 pt-7">
+//                   {item.live && (
+//                     <a
+//                       href={item.live}
+//                       target="_blank"
+//                       rel="noopener noreferrer"
+//                       className="bg-yellow-400 text-gray-900 font-semibold font-displayer px-4 py-2 rounded-full text-sm hover:bg-yellow-500 transition"
+//                     >
+//                       Live Demo
+//                     </a>
+//                   )}
+
+//                   {item.github && (
+//                     <a
+//                       href={item.github}
+//                       target="_blank"
+//                       rel="noopener noreferrer"
+//                       className="border border-yellow-400 text-yellow-400 font-semibold font-displayer px-4 py-2 rounded-full text-sm hover:bg-yellow-400 hover:text-gray-900 transition"
+//                     >
+//                       GitHub
+//                     </a>
+//                   )}
+//                 </div>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+
+//         {projects.length === 0 && (
+//           <p className="text-center text-gray-300 text-lg mt-10">
+//             No projects added yet.
+//           </p>
+//         )}
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default Projects;
+
+
+
+
+
 // src/components/Projects.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -269,57 +393,63 @@ const Projects = () => {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-          {projects.map((item) => (
-            <div
-              key={item._id}
-              className="bg-gray-800/80 backdrop-blur-sm border border-yellow-500 border-4 rounded-2xl overflow-hidden shadow-lg hover:shadow-gray-400/40 hover:-translate-y-2 transition-all duration-500 group"
-            >
-              {/* Project Image */}
-              <div className="overflow-hidden">
-                <img
-                  src={`${BACKEND_URL}${item.image}`}
-                  alt={item.title}
-                  className="w-full h-56 object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
+          {projects.map((item) => {
+            const imgSrc = item.image?.startsWith("http") ? item.image : `${BACKEND_URL}${item.image}`;
 
-              {/* Content */}
-              <div className="p-7 flex flex-col justify-between space-y-1">
-                <h3 className="text-2xl font-semibold font-display text-yellow-400 mb-1">
-                  {item.title}
-                </h3>
-
-                <p className="text-gray-300 font-displayer text-sm leading-relaxed">
-                  {item.desc}
-                </p>
-
-                {/* Buttons */}
-                <div className="flex items-center gap-25 pt-7">
-                  {item.live && (
-                    <a
-                      href={item.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-yellow-400 text-gray-900 font-semibold font-displayer px-4 py-2 rounded-full text-sm hover:bg-yellow-500 transition"
-                    >
-                      Live Demo
-                    </a>
-                  )}
-
-                  {item.github && (
-                    <a
-                      href={item.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="border border-yellow-400 text-yellow-400 font-semibold font-displayer px-4 py-2 rounded-full text-sm hover:bg-yellow-400 hover:text-gray-900 transition"
-                    >
-                      GitHub
-                    </a>
+            return (
+              <div
+                key={item._id}
+                className="bg-gray-800/80 backdrop-blur-sm border border-yellow-500 border-4 rounded-2xl overflow-hidden shadow-lg hover:shadow-gray-400/40 hover:-translate-y-2 transition-all duration-500 group"
+              >
+                {/* Project Image */}
+                <div className="overflow-hidden">
+                  {item.image && (
+                    <img
+                      src={imgSrc}
+                      alt={item.title}
+                      className="w-full h-56 object-cover transform group-hover:scale-110 transition-transform duration-700"
+                    />
                   )}
                 </div>
+
+                {/* Content */}
+                <div className="p-7 flex flex-col justify-between space-y-1">
+                  <h3 className="text-2xl font-semibold font-display text-yellow-400 mb-1">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-gray-300 font-displayer text-sm leading-relaxed">
+                    {item.desc}
+                  </p>
+
+                  {/* Buttons */}
+                  <div className="flex items-center gap-25 pt-7">
+                    {item.live && (
+                      <a
+                        href={item.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-yellow-400 text-gray-900 font-semibold font-displayer px-4 py-2 rounded-full text-sm hover:bg-yellow-500 transition"
+                      >
+                        Live Demo
+                      </a>
+                    )}
+
+                    {item.github && (
+                      <a
+                        href={item.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="border border-yellow-400 text-yellow-400 font-semibold font-displayer px-4 py-2 rounded-full text-sm hover:bg-yellow-400 hover:text-gray-900 transition"
+                      >
+                        GitHub
+                      </a>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {projects.length === 0 && (

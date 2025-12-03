@@ -31,24 +31,83 @@
 // export default ProjectCard;
 
 
-// // src/admin/ProjectCard.jsx
+// // // src/admin/ProjectCard.jsx
+// import React from "react";
+// import { motion } from "framer-motion";
+
+// const ProjectCard = ({ project, onEdit, onDelete }) => {
+//   const img =
+//     project.image ||
+//     project.imageUrl ||
+//     project.thumbnail ||
+//     project.projectImage ||
+//     "";
+
+//   return (
+//     <motion.div
+//       whileHover={{ scale: 1.02 }}
+//       className="bg-white dark:bg-gray-800 border border-green-300 rounded-xl shadow-lg overflow-hidden"
+//     >
+//       {/* Project Image */}
+//       <div className="h-40 w-full overflow-hidden">
+//         {img ? (
+//           <img
+//             src={img}
+//             alt={project.title}
+//             className="w-full h-full object-cover"
+//           />
+//         ) : (
+//           <div className="w-full h-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+//             <span className="text-gray-600 dark:text-gray-300">No Image</span>
+//           </div>
+//         )}
+//       </div>
+
+//       <div className="p-4">
+//         <h3 className="font-semibold text-lg text-green-900 dark:text-yellow-300">
+//           {project.title}
+//         </h3>
+
+//         <p className="text-sm text-gray-700 dark:text-gray-300 mt-1">
+//           {project.description?.slice(0, 80)}...
+//         </p>
+
+//         <div className="flex justify-between mt-4">
+//           <button
+//             onClick={() => onEdit(project)}
+//             className="px-3 py-1 bg-yellow-400 text-green-800 rounded-md"
+//           >
+//             Edit
+//           </button>
+//           <button
+//             onClick={() => onDelete(project._id)}
+//             className="px-3 py-1 bg-red-600 text-white rounded-md"
+//           >
+//             Delete
+//           </button>
+//         </div>
+//       </div>
+//     </motion.div>
+//   );
+// };
+
+// export default ProjectCard;
+
+
+
+
+
 import React from "react";
 import { motion } from "framer-motion";
 
 const ProjectCard = ({ project, onEdit, onDelete }) => {
-  const img =
-    project.image ||
-    project.imageUrl ||
-    project.thumbnail ||
-    project.projectImage ||
-    "";
+  const img = project.image || project.imageUrl || "";
 
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
       className="bg-white dark:bg-gray-800 border border-green-300 rounded-xl shadow-lg overflow-hidden"
     >
-      {/* Project Image */}
       <div className="h-40 w-full overflow-hidden">
         {img ? (
           <img
@@ -69,7 +128,7 @@ const ProjectCard = ({ project, onEdit, onDelete }) => {
         </h3>
 
         <p className="text-sm text-gray-700 dark:text-gray-300 mt-1">
-          {project.description?.slice(0, 80)}...
+          {project.desc?.slice(0, 80)}...
         </p>
 
         <div className="flex justify-between mt-4">
