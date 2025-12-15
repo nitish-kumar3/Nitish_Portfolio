@@ -18,6 +18,6 @@ export const adminLogin = (req, res) => {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1d" });
+  const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "7d" });
   res.json({ success: true, token });
 };
