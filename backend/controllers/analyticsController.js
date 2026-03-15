@@ -2,7 +2,6 @@ import Inquiry from "../model/Inquiry.js";
 import Visit from "../model/Visit.js";
 import mongoose from "mongoose";
 
-
 /**
  * Helper: returns array of last N days (including today) with ISO date at midnight.
  */
