@@ -1,5 +1,5 @@
 .evn    h yeha.
-
+<!--  
 //PORT=5000
 
 // MONGO_URI=mongodb+srv://nitish6206774025_db_user:W9w6wusgO1OFdD6N@cluster0.kfhizco.mongodb.net/?appName=Cluster0
@@ -20,4 +20,5 @@
 // CLOUDINARY_CLOUD_NAME=dnlp3rjqk
 //CLOUDINARY_API_KEY=443954141835735
 //CLOUDINARY_API_SECRET=jaDmji8widgPil_RySk3BC0MjM8
+-->
 
