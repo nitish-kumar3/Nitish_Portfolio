@@ -1,0 +1,23 @@
+.evn    h yeha.
+
+#PORT=5000
+
+# MONGO_URI=mongodb+srv://nitish6206774025_db_user:W9w6wusgO1OFdD6N@cluster0.kfhizco.mongodb.net/?appName=Cluster0
+
+# EMAIL_USER=nitish6206774025@gmail.com
+# EMAIL_PASS=npxg ellr gwqn tygq
+
+# CORS_ORIGIN=https://nitish-prajapati-portfolio.vercel.app
+# # CORS_ORIGIN=http://localhost:5173
+
+
+# ADMIN_EMAIL=admin@gmail.com
+# ADMIN_PASSWORD=123456
+
+# JWT_SECRET=yourSecretKey123
+
+
+# CLOUDINARY_CLOUD_NAME=dnlp3rjqk
+# CLOUDINARY_API_KEY=443954141835735
+# CLOUDINARY_API_SECRET=jaDmji8widgPil_RySk3BC0MjM8
+
