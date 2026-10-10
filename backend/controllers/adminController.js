@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 
-
 export const adminLogin = (req, res) => {
   // read env here (not at module load)
   const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
