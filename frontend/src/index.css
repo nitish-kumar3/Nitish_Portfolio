@@ -382,3 +382,18 @@ footer {
   background: #f8fafc;
   border-radius: 8px;
 }
+
+body[data-theme="light"] > div:has(#chat-input) div:has(> #chat-close) {
+  color: #fff !important;
+}
+
+@media (max-width: 767px) {
+  body > div:has(#chat-input) {
+    box-sizing: border-box !important;
+    width: min(350px, calc(100vw - 24px)) !important;
+    height: min(450px, calc(100dvh - 32px)) !important;
+    right: max(12px, env(safe-area-inset-right)) !important;
+    bottom: max(12px, env(safe-area-inset-bottom)) !important;
+  }
+}
+
