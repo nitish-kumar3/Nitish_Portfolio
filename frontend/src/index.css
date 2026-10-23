@@ -396,4 +396,3 @@ body[data-theme="light"] > div:has(#chat-input) div:has(> #chat-close) {
     bottom: max(12px, env(safe-area-inset-bottom)) !important;
   }
 }
-
