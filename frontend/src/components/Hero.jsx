@@ -169,6 +169,7 @@
 
 
 // now
+
 import React from 'react'
 import heroImg from '../assets/heros.png'
 import cv from '../assets/cv.jpg'
@@ -232,7 +233,7 @@ const Hero = () => {
         </div>
 
         {/* RIGHT SECTION - Image + Background SVG */}
-        <div className="relative w-full md:w-1/2 flex justify-center items-center mt-12 md:mt-0">
+        <div className="relative w-full md:w-1/2 flex flex-col md:flex-row justify-center items-center mt-12 md:mt-0">
           
           {/* SVG Yellow Blob Background */}
           <svg
@@ -254,20 +255,20 @@ const Hero = () => {
           />
 
           {/* Floating Badge */}
-          <div className="absolute bottom-10 left-6 bg-yellow-400 text-green-900 text-xs font-semibold font-displayer px-4 py-2 rounded-full shadow-lg rotate-[-10deg]">
+          <div className="hidden md:block absolute bottom-10 left-6 bg-yellow-400 text-green-900 text-xs font-semibold font-displayer px-4 py-2 rounded-full shadow-lg rotate-[-10deg]">
             🚀 Full Stack Dev
           </div>
 
           {/* Circular Badge */}
-          <div className="absolute top-20 right-10 bg-yellow-400 text-green-900 w-28 h-28 rounded-full flex flex-col justify-center items-center text-xs font-semibold font-displayer shadow-lg rotate-[15deg]">
+          <div className="hidden md:flex absolute top-20 right-10 bg-yellow-400 text-green-900 w-28 h-28 rounded-full flex-col justify-center items-center text-xs font-semibold font-displayer shadow-lg rotate-[15deg]">
             <span>Hire Me</span>
           </div>
 
           {/* Floating Tags */}
-          <div className="absolute bottom-16 right-10 bg-yellow-400 text-green-900 text-sm px-4 py-1 rounded-full font-medium font-displayer shadow-md">
+          <div className="mt-4 md:mt-0 md:absolute md:bottom-16 md:right-10 bg-yellow-400 text-green-900 text-sm px-4 py-1 rounded-full font-medium font-displayer shadow-md">
            Full-Stack Developer
           </div>
-          <div className="absolute bottom-0 left-10 bg-green-800 text-yellow-400 text-sm px-4 py-1 rounded-full font-medium font-displayer shadow-md">
+          <div className="hidden md:block absolute bottom-0 left-10 bg-green-800 text-yellow-400 text-sm px-4 py-1 rounded-full font-medium font-displayer shadow-md">
             Web Developer
           </div>
         </div>
@@ -277,5 +278,3 @@ const Hero = () => {
 }
 
 export default Hero
-
-
