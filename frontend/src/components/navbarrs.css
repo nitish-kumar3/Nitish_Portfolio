@@ -9,13 +9,16 @@ body[data-theme="light"] {
 } */
 
 
+/* phle abhi just  */
+
+/* 
 .navbar-container {
   display: flex;
   justify-content: center;
 }
 
 .navbar-inner {
-  background-color: #1c3b33; /* Deep green like your image */
+  background-color: #1c3b33;
   border-radius: 50px;
   transition: all 0.3s ease;
 }
@@ -34,4 +37,39 @@ body[data-theme="light"] {
 
 [data-theme='dark'] a:hover {
   color: #facc15;
+} */
+
+
+
+/* now */
+
+.navbar-container {
+  display: flex;
+  justify-content: center;
 }
+
+.navbar-inner {
+  background-color: var(--navbar-bg, var(--bg-primary));
+  border: 1px solid var(--border-subtle);
+  border-radius: 50px;
+  transition: background-color 220ms ease, border-color 220ms ease;
+}
+
+.logo-circle {
+  border: 2px solid var(--border-primary);
+}
+
+body[data-theme='dark'] .navbar-inner {
+  background-color: var(--bg-primary);
+  border-color: var(--border-subtle);
+}
+
+body[data-theme='dark'] .navbar-inner nav a:not([class~="text-yellow-400"]) {
+  color: var(--text-secondary);
+}
+
+body[data-theme='dark'] .navbar-inner nav a:hover,
+body[data-theme='dark'] .navbar-inner nav a[class~="text-yellow-400"] {
+  color: var(--accent-primary);
+}
+
