@@ -524,6 +524,119 @@
 
 
 
+// phle just abhi
+
+// import React, { useState, useEffect } from 'react';
+// import Logo from '../assets/logos.png';
+// import { Sun, Moon, Menu, X } from 'lucide-react';
+// import './navbarrs.css';
+
+// const Navbar = () => {
+//   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+//   const [theme, setTheme] = useState(
+//     localStorage.getItem("theme") || "light"
+//   );
+
+//   const applyTheme = (mode) => {
+//     document.body.setAttribute("data-theme", mode);
+//     localStorage.setItem("theme", mode);
+//     setTheme(mode);
+//   };
+
+//   const toggleTheme = () => {
+//     applyTheme(theme === "light" ? "dark" : "light");
+//   };
+
+//   useEffect(() => {
+//     applyTheme(theme);
+//   }, []);
+
+//   return (
+//     <header className="sticky top-4 z-50 w-full flex flex-col items-center px-4">
+
+//       {/* NAVBAR */}
+//       <div className="
+//         navbar-inner max-w-6xl w-full 
+//         flex items-center justify-between 
+//         px-4 py-3 rounded-full shadow-md
+//       ">
+//         {/* Left Logo */}
+//         <div className="flex items-center space-x-3">
+//           <div className="logo-circle flex items-center justify-center bg-yellow-500 rounded-full w-10 h-10">
+//             <img src={Logo} alt="Logo" className="w-6 h-6" />
+//           </div>
+//           <h1 className="text-white font-semibold text-xl font-displayer">
+//             Nitish<span className="text-yellow-400">.</span>
+//           </h1>
+//         </div>
+
+//         {/* Desktop Nav */}
+//         <nav className="hidden md:flex items-center space-x-8 text-base font-medium font-displayer text-gray-200">
+//           <a href="#hero" className="text-yellow-400">Home</a>
+//           <a href="#services" className="hover:text-yellow-400 transition">Services</a>
+//           <a href="#about" className="hover:text-yellow-400 transition">About</a>
+//           <a href="#projects" className="hover:text-yellow-400 transition">Projects</a>
+//         </nav>
+
+//         {/* Right Buttons */}
+//         <div className="flex items-center space-x-4">
+//           {theme === "light" ? (
+//             <Sun className="w-6 h-6 text-yellow-400 cursor-pointer" onClick={toggleTheme} />
+//           ) : (
+//             <Moon className="w-6 h-6 text-gray-200 cursor-pointer" onClick={toggleTheme} />
+//           )}
+
+//           <a
+//             href="#contact"
+//             className="hidden md:inline-block bg-yellow-500 text-white font-semibold font-displayer px-5 py-2 rounded-full shadow"
+//           >
+//             Contact Me
+//           </a>
+
+//           <button
+//             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+//             className="md:hidden inline-flex items-center justify-center p-2 text-white"
+//           >
+//             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* MOBILE MENU (Drops directly under navbar) */}
+//       {mobileMenuOpen && (
+//         <div
+//           className="
+//             md:hidden bg-[#1c3b33] 
+//             w-full max-w-6xl 
+//             mt-2 rounded-2xl shadow-lg 
+//             py-4 flex flex-col items-center 
+//             space-y-4 text-gray-100 font-displayer
+//           "
+//         >
+//           <a href="#hero" onClick={() => setMobileMenuOpen(false)}>Home</a>
+//           <a href="#services" onClick={() => setMobileMenuOpen(false)}>Services</a>
+//           <a href="#about" onClick={() => setMobileMenuOpen(false)}>About</a>
+//           <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Projects</a>
+
+//           <a
+//             href="#contact"
+//             onClick={() => setMobileMenuOpen(false)}
+//             className="bg-white text-gray-800 px-5 py-2 rounded-full font-semibold font-displayer"
+//           >
+//             Contact Me
+//           </a>
+//         </div>
+//       )}
+
+//     </header>
+//   );
+// };
+
+// export default Navbar;
+
+
+
+// now
 
 import React, { useState, useEffect } from 'react';
 import Logo from '../assets/logos.png';
@@ -533,7 +646,7 @@ import './navbarrs.css';
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || "light"
+    localStorage.getItem("theme") || "dark"
   );
 
   const applyTheme = (mode) => {
@@ -605,7 +718,7 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div
           className="
-            md:hidden bg-[#1c3b33] 
+            md:hidden bg-gray-800 
             w-full max-w-6xl 
             mt-2 rounded-2xl shadow-lg 
             py-4 flex flex-col items-center 
